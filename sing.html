@@ -4,15 +4,25 @@
     <meta charset="UTF-8">
     <title>:D it's my birthday!!!</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
+            background-image: url('bgg.gif');
+            background-repeat: repeat;
+            background-size: auto;
+            position: relative;
+        }
+        .text {
+            font-family: 'Press Start 2P', monospace;
         }
         #container {
             display: flex;
+            flex-direction: column;
             align-items: center;
         }
         #note-box {
@@ -37,11 +47,69 @@
             width: 20px;
             height: 400px;
         }
+        #slider-and-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 640px;
+            margin: -20px 0;
+        }
+        .main {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            position: relative;
+        }
+        .rotated-line {
+            position: absolute; /* Absolute position to place it on top without affecting layout */
+            top: 61%;             /* Position it at the top of the note box */
+            left: 19%;          /* Center it horizontally */
+            transform: translateX(-50%) rotate(90deg); /* Center it and rotate */
+            width: 420px;       /* Set width of the rotated line */
+            height: 52px;        /* Set height of the rotated line */
+            z-index: 8;
+        }
+        .ruler {
+            z-index: 10;
+            width: 100%;
+            max-width: 100%;
+            /* margin: 0 auto; */
+            display: block;
+        }
+        .gifT, .gifB {
+            width: 100%; /* Ensure they span across the slider and note box */
+            max-width: 100%; /* Optional: match the note box width */
+            margin: 0 auto;
+        }
+        .sing-gif {
+            position: absolute;
+            left: 45px;
+            top: calc(50% - 280px);
+            width: 60px;
+        }
+        .band-gif {
+            position: absolute;
+            right: 50px;
+            top: calc(50% - 272px);
+            width: 220px;
+        }
+        .disco-gif, .lights-gif {
+            width: 100%;
+            object-fit: cover;
+        }
+        .discoball-gif {
+            position: absolute;
+            top: 8%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+        }
         .note {
             position: absolute;
             width: 50px;
             height: 20px;
-            background-color: red; /* Initial color */
+            background-color: blue; /* Initial color */
             text-align: center;
             line-height: 20px;
             color: white;
@@ -59,16 +127,30 @@
     </style>
 </head>
 <body>
-    <!-- <h1>Karaoke: Happy Birthday (C4 - C5) with Slider Feedback</h1> -->
-    <div>
-        <h2>Score: <span id="score">0</span></h2>
+    <img src="disco.gif" alt="Disco GIF" class="disco-gif">
+    <img src="lights.gif" alt="Lights GIF" class="lights-gif">
+    <img src="discoball.gif" alt="Discoball GIF" class="discoball-gif">
+    <div class="main">
+        <img src="sing.gif" alt="Sing animation" class="sing-gif">
+        <img src="band.gif" alt="Band animation" class="band-gif">
     </div>
-    <button id="start">Start Song</button>
+    <!-- <img src="ruler.gif" alt="Top ruler" class="gifT">
+    <img src="ruler.gif" alt="Bottom ruler" class="gifB"> -->
+    <!-- <h1>Karaoke: Happy Birthday (C4 - C5) with Slider Feedback</h1> -->
+    <div class="text">
+        <h2>score: <span id="score">0</span></h2>
+    </div>
+    <button id="start">start!</button>
     <div id="container">
-        <div id="slider-container">
-            <input type="range" id="note-slider" min="50" max="400" step="1" value="400">
+        <img src="ruler.gif" alt="Top ruler" class="ruler gifT">
+        <div id="slider-and-box">
+            <div id="slider-container">
+                <input type="range" id="note-slider" min="50" max="400" step="1" value="400">
+            </div>
+            <img src="rline.gif" alt="Rotated Line" class="rotated-line">
+            <div id="note-box"></div>
         </div>
-        <div id="note-box"></div>
+        <img src="ruler.gif" alt="Bottom ruler" class="ruler gifB">
     </div>
 
     <script>
@@ -81,20 +163,33 @@
         };
 
         const songNotes = [
-            { note: "C4", duration: 1 }, { note: "C4", duration: 1 },
-            { note: "D4", duration: 2 }, { note: "C4", duration: 2 },
-            { note: "F4", duration: 2 }, { note: "E4", duration: 4 },
-            { note: "C4", duration: 1 }, { note: "C4", duration: 1 },
-            { note: "D4", duration: 2 }, { note: "C4", duration: 2 },
-            { note: "G4", duration: 2 }, { note: "F4", duration: 4 },
-            { note: "C4", duration: 1 }, { note: "C4", duration: 1 },
-            { note: "C5", duration: 2 }, { note: "A4", duration: 2 },
-            { note: "F4", duration: 2 }, { note: "E4", duration: 2 },
-            { note: "D4", duration: 2 },
-            { note: "Bb4", duration: 1 }, { note: "Bb4", duration: 1 },
-            { note: "A4", duration: 2 }, { note: "F4", duration: 2 },
-            { note: "G4", duration: 2 }, { note: "F4", duration: 4 }
+            { note: "C4", text: "ha", duration: 1 },
+            { note: "C4", text: "ppy", duration: 1 },
+            { note: "D4", text: "birth", duration: 2 },
+            { note: "C4", text: "day", duration: 2 },
+            { note: "F4", text: "to", duration: 2 },
+            { note: "E4", text: "meee", duration: 4 },
+            { note: "C4", text: "ha", duration: 1 },
+            { note: "C4", text: "ppy", duration: 1 },
+            { note: "D4", text: "birth", duration: 2 },
+            { note: "C4", text: "day", duration: 2 },
+            { note: "G4", text: "to", duration: 2 },
+            { note: "F4", text: "meeee", duration: 4 },
+            { note: "C4", text: "ha", duration: 1 },
+            { note: "C4", text: "ppy", duration: 1 },
+            { note: "C5", text: "BIRTH", duration: 2 },
+            { note: "A4", text: "DAY", duration: 2 },
+            { note: "F4", text: "HAPPY", duration: 2 },
+            { note: "E4", text: "BIRTH", duration: 2 },
+            { note: "D4", text: "DAYAY", duration: 2 },
+            { note: "Bb4", text: "haa", duration: 1 },
+            { note: "Bb4", text: "ppyy", duration: 1 },
+            { note: "A4", text: "birth", duration: 2 },
+            { note: "F4", text: "day", duration: 2 },
+            { note: "G4", text: "toooo", duration: 2 },
+            { note: "F4", text: "meeeee", duration: 4 }
         ];
+
 
         const TOLERANCE = 20; // Tolerance for aligning with the slider
         let score = 0; // Initialize score
@@ -105,32 +200,34 @@
         }
 
         function startSong() {
-            noteBox.innerHTML = ''; // Clear previous notes
-            let delay = 0;
+    noteBox.innerHTML = ''; // Clear previous notes
+    let delay = 0;
 
-            songNotes.forEach(noteData => {
-                const note = document.createElement('div');
-                note.className = 'note';
-                note.textContent = noteData.note;
+    songNotes.forEach(noteData => {
+        const note = document.createElement('div');
+        note.className = 'note';
+        
+        // Set the custom text for each note from the songNotes array
+        note.textContent = noteData.text; // Use custom text instead of note name
 
-                // Set vertical position based on the note pitch
-                const noteYPos = noteBox.clientHeight - (grid[noteData.note] || 0);
-                note.style.top = `${noteYPos}px`;
+        // Set vertical position based on the note pitch
+        const noteYPos = noteBox.clientHeight - (grid[noteData.note] || 0);
+        note.style.top = `${noteYPos}px`;
 
-                // Apply animation with individual delays and duration
-                note.style.animation = `moveLeft ${noteData.duration}s linear ${delay}s forwards`;
-                note.dataset.yPos = noteYPos; // Store y-position as data attribute for checking alignment
-                noteBox.appendChild(note);
+        // Apply animation with individual delays and duration
+        note.style.animation = `moveLeft ${noteData.duration}s linear ${delay}s forwards`;
+        note.dataset.yPos = noteYPos; // Store y-position as data attribute for checking alignment
+        noteBox.appendChild(note);
 
-                delay += noteData.duration; // Increment delay for the next note
+        delay += noteData.duration; // Increment delay for the next note
 
-                // Check alignment at the end of the note duration
-                setTimeout(() => checkAlignment(note, noteData), delay * 1000);
-            });
+        // Check alignment at the end of the note duration
+        setTimeout(() => checkAlignment(note, noteData), delay * 1000);
+    });
 
-            // Check final score at the end of the song
-            setTimeout(checkFinalScore, delay * 1000 + 1000);
-        }
+    // Check final score at the end of the song
+    setTimeout(checkFinalScore, delay * 1000 + 1000);
+}
 
         function checkAlignment(note, noteData) {
             const sliderValue = parseInt(noteSlider.value);
@@ -145,7 +242,7 @@
                 note.style.backgroundColor = 'green'; // Within tolerance
                 updateScore(5); // Add 5 points for within tolerance
             } else {
-                note.style.backgroundColor = 'red'; // Not aligned
+                note.style.backgroundColor = 'blue'; // Not aligned
             }
         }
 
