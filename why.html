@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>;-;</title>
+    <style>
+        /* Include Google Font for typewriter effect */
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: black; /* Set the background color to black */
+            background-image: url('cry.gif'); /* Cry gif centered */
+            background-position: center; /* Center the cry.gif */
+            background-repeat: no-repeat; /* Don't repeat the cry.gif */
+            background-size: 80%; /* Ensure the cry.gif stays contained */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative; /* Position relative to place text over it */
+        }
+
+        #drip-gif {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+        }
+
+        #text-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 2em;
+            font-family: 'Press Start 2P', monospace; /* Apply the typewriter font */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Adds shadow for better visibility */
+        }
+    </style>
+</head>
+<body>
+    <img id="drip-gif" src="drip.gif" alt="Drip Gif">
+
+    <div id="text-overlay">okay...</div> <!-- Text overlay on top of the cry.gif -->
+
+    <script>
+        // No specific JavaScript needed for this layout
+    </script>
+</body>
+</html>

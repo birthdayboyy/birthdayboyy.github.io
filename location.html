@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>beautiful</title>
+    <style>
+        /* Include Google Font for typewriter effect */
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Press Start 2P', monospace; /* Apply the typewriter font */
+            background-image: url('bg.gif'), url('yay.gif');
+            background-repeat: repeat, repeat;
+            margin: 0;
+        }
+        img {
+            margin-top: 20px;
+            max-width: 100%;
+            height: auto;
+        }
+        #globe {
+            position: absolute;
+            left: 20%; /* You can change these values */
+            top: 25%;  /* to position it anywhere you like */
+            width: 50px; /* Set width as needed */
+            height: auto; /* Maintain aspect ratio */
+        }
+        div {
+            color: white; /* Text color set to white */
+            font-size: 1.5em; /* Smaller text size */
+            text-align: center; /* Center text horizontally */
+            margin: 0; /* Remove default margins */
+            padding: 0 20px; /* Optional: padding to ensure text doesn't touch the edges */
+        }
+    </style>
+</head>
+<body>
+    <div>you sing beautifully, this is the best birthday! :D</div>
+    <img src="nextmap.gif" alt="Next Map Animation">
+    <img id="globe" src="globe.gif" alt="Globe Animation">
+    <img id="foot" src="run.gif" alt="Run Animation">
+</body>
+</html>

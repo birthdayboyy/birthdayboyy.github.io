@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>psst...</title>
+    <style>
+        /* Include Google Font for typewriter effect */
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Press Start 2P', monospace; /* Apply the typewriter font */
+            background-color: #000;
+            color: #fff;
+            flex-direction: column;
+        }
+        #text-box {
+            width: 80%;
+            max-width: 600px;
+            padding: 20px;
+            border: 2px solid #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .buttons button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 2px solid #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .buttons button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div id="text-box"></div>
+    <div class="buttons" style="display: none;">
+        <button id="yes">Yes</button>
+        <button id="no">No</button>
+    </div>
+
+    <script>
+        const messages = [
+            "Hey",
+            "…",
+            "I’m sorry to bother you",
+            "But",
+            "…",
+            "Today is my birthday you know",
+            "…",
+            "I know you’re busy, you look like you’re searching something",
+            "But I can help you if you want!",
+            "…",
+            "But",
+            "…",
+            "Do you mind singing me happy birthday?..",
+            "Not many people know it's my birthday today",
+            "So I would really appreciate it :)"
+        ];
+
+        const textBox = document.getElementById('text-box');
+        const buttons = document.querySelector('.buttons');
+        const yesButton = document.getElementById('yes');
+        const noButton = document.getElementById('no');
+
+        let index = 0;
+
+        function typeMessage(message, callback) {
+            let i = 0;
+            textBox.textContent = '';
+            const typingInterval = setInterval(() => {
+                textBox.textContent += message[i];
+                i++;
+                if (i >= message.length) {
+                    clearInterval(typingInterval);
+                    setTimeout(callback, 2000); // Wait 2 seconds before next message
+                }
+            }, 50); // Adjust typing speed (50ms per character)
+        }
+
+        function displayMessages() {
+            if (index < messages.length) {
+                typeMessage(messages[index], () => {
+                    index++;
+                    displayMessages();
+                });
+            } else {
+                // Show the buttons after all messages are displayed
+                buttons.style.display = 'flex';
+            }
+        }
+
+        function handleYes() {
+            window.location.href = 'sing.html'; // Redirect to index.html when "Yes" is clicked
+        }
+
+        function handleNo() {
+            window.location.href = 'why.html'; // Display a simple alert if "No" is clicked
+        }
+
+        yesButton.addEventListener('click', handleYes);
+        noButton.addEventListener('click', handleNo);
+
+        displayMessages();
+    </script>
+</body>
+</html>

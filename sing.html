@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>:D it's my birthday!!!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #container {
+            display: flex;
+            align-items: center;
+        }
+        #note-box {
+            border: 1px solid #ddd;
+            margin: 20px;
+            width: 600px;
+            height: 400px;
+            overflow: hidden;
+            position: relative;
+        }
+        #slider-container {
+            margin-right: 10px;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        #note-slider {
+            writing-mode: bt-lr; /* Change orientation to vertical */
+            -webkit-appearance: slider-vertical;
+            appearance: slider-vertical;
+            width: 20px;
+            height: 400px;
+        }
+        .note {
+            position: absolute;
+            width: 50px;
+            height: 20px;
+            background-color: red; /* Initial color */
+            text-align: center;
+            line-height: 20px;
+            color: white;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        @keyframes moveLeft {
+            from {
+                left: 100%;
+            }
+            to {
+                left: -50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- <h1>Karaoke: Happy Birthday (C4 - C5) with Slider Feedback</h1> -->
+    <div>
+        <h2>Score: <span id="score">0</span></h2>
+    </div>
+    <button id="start">Start Song</button>
+    <div id="container">
+        <div id="slider-container">
+            <input type="range" id="note-slider" min="50" max="400" step="1" value="400">
+        </div>
+        <div id="note-box"></div>
+    </div>
+
+    <script>
+        const noteBox = document.getElementById('note-box');
+        const noteSlider = document.getElementById('note-slider');
+        const scoreDisplay = document.getElementById('score');
+        const grid = {
+            "C4": 50, "D4": 100, "E4": 150, "F4": 200, "G4": 250,
+            "A4": 300, "Bb4": 350, "C5": 400
+        };
+
+        const songNotes = [
+            { note: "C4", duration: 1 }, { note: "C4", duration: 1 },
+            { note: "D4", duration: 2 }, { note: "C4", duration: 2 },
+            { note: "F4", duration: 2 }, { note: "E4", duration: 4 },
+            { note: "C4", duration: 1 }, { note: "C4", duration: 1 },
+            { note: "D4", duration: 2 }, { note: "C4", duration: 2 },
+            { note: "G4", duration: 2 }, { note: "F4", duration: 4 },
+            { note: "C4", duration: 1 }, { note: "C4", duration: 1 },
+            { note: "C5", duration: 2 }, { note: "A4", duration: 2 },
+            { note: "F4", duration: 2 }, { note: "E4", duration: 2 },
+            { note: "D4", duration: 2 },
+            { note: "Bb4", duration: 1 }, { note: "Bb4", duration: 1 },
+            { note: "A4", duration: 2 }, { note: "F4", duration: 2 },
+            { note: "G4", duration: 2 }, { note: "F4", duration: 4 }
+        ];
+
+        const TOLERANCE = 20; // Tolerance for aligning with the slider
+        let score = 0; // Initialize score
+
+        function updateScore(amount) {
+            score += amount;
+            scoreDisplay.textContent = score; // Update the displayed score
+        }
+
+        function startSong() {
+            noteBox.innerHTML = ''; // Clear previous notes
+            let delay = 0;
+
+            songNotes.forEach(noteData => {
+                const note = document.createElement('div');
+                note.className = 'note';
+                note.textContent = noteData.note;
+
+                // Set vertical position based on the note pitch
+                const noteYPos = noteBox.clientHeight - (grid[noteData.note] || 0);
+                note.style.top = `${noteYPos}px`;
+
+                // Apply animation with individual delays and duration
+                note.style.animation = `moveLeft ${noteData.duration}s linear ${delay}s forwards`;
+                note.dataset.yPos = noteYPos; // Store y-position as data attribute for checking alignment
+                noteBox.appendChild(note);
+
+                delay += noteData.duration; // Increment delay for the next note
+
+                // Check alignment at the end of the note duration
+                setTimeout(() => checkAlignment(note, noteData), delay * 1000);
+            });
+
+            // Check final score at the end of the song
+            setTimeout(checkFinalScore, delay * 1000 + 1000);
+        }
+
+        function checkAlignment(note, noteData) {
+            const sliderValue = parseInt(noteSlider.value);
+            const invertedSliderValue = noteSlider.max - sliderValue + parseInt(noteSlider.min);
+            const noteYPos = parseInt(note.dataset.yPos);
+
+            // Check alignment with tolerance and update score
+            if (invertedSliderValue === noteYPos) {
+                note.style.backgroundColor = 'green'; // Exact match
+                updateScore(10); // Add 10 points for exact alignment
+            } else if (Math.abs(invertedSliderValue - noteYPos) <= TOLERANCE) {
+                note.style.backgroundColor = 'green'; // Within tolerance
+                updateScore(5); // Add 5 points for within tolerance
+            } else {
+                note.style.backgroundColor = 'red'; // Not aligned
+            }
+        }
+
+        function checkFinalScore() {
+            if (score > 100) {
+                window.location.href = 'location.html'; // Redirect to map.html if score > 100
+            } else {
+                window.location.href = 'badvoice.html';
+            }
+        }
+
+        document.getElementById('start').addEventListener('click', startSong);
+    </script>
+</body>
+</html>
