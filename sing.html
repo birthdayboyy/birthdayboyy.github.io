@@ -17,6 +17,33 @@
             background-size: auto;
             position: relative;
         }
+        #start {
+            background-color: #4CAF50; /* Green background */
+            border: none;
+            color: white;
+            padding: 20px 40px;
+            text-align: center;
+            font-size: 15px;
+            cursor: pointer;
+            border-radius: 12px;
+            font-family: 'Press Start 2P', monospace;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 2px rgba(0, 255, 0, 0.7); /* Initial glow effect */
+        }
+        #start:hover {
+            background-color: #45a049; /* Darker green on hover */
+            transform: scale(1.1); /* Slightly enlarge the button */
+            box-shadow: 0 0 20px rgba(0, 255, 0, 1), 0 0 30px rgba(0, 255, 0, 0.8); /* Brighter glow on hover */
+        }
+        #start:active {
+            transform: scale(1); /* Reset scale when clicked */
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5); /* Subtle shadow on click */
+        }
+        #start:disabled {
+            background-color: #a5d6a7;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
         .text {
             font-family: 'Press Start 2P', monospace;
         }
@@ -48,6 +75,7 @@
             height: 400px;
         }
         #slider-and-box {
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -62,12 +90,12 @@
             position: relative;
         }
         .rotated-line {
-            position: absolute; /* Absolute position to place it on top without affecting layout */
-            top: 61%;             /* Position it at the top of the note box */
-            left: 19%;          /* Center it horizontally */
-            transform: translateX(-50%) rotate(90deg); /* Center it and rotate */
-            width: 420px;       /* Set width of the rotated line */
-            height: 52px;        /* Set height of the rotated line */
+            position: absolute; /* Keep it absolute to position over other elements */
+            top: 50%; /* Set it relative to the height of its container */
+            left: 13%; /* Center it horizontally */
+            transform: translate(-50%, -50%) rotate(90deg); /* Center it with translate, and rotate */
+            width: 408px; /* Set width of the rotated line */
+            height: 46px; /* Set height of the rotated line */
             z-index: 8;
         }
         .ruler {
@@ -254,7 +282,11 @@
             }
         }
 
-        document.getElementById('start').addEventListener('click', startSong);
+        document.getElementById('start').addEventListener('click', function(){
+            startSong();
+            this.disabled = true;
+            this.style.cursor = 'not-allowed';
+        });
     </script>
 </body>
 </html>
