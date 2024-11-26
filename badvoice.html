@@ -28,14 +28,17 @@
             border-radius: 10px;
             text-align: center;
             font-size: 1.5em;
+            display: none; /* Initially hidden */
         }
         .buttons {
+            font-family: 'Press Start 2P', monospace;
             margin-top: 20px;
-            display: flex;
+            display: none; /* Initially hidden */
             justify-content: center;
             gap: 20px;
         }
         .buttons button {
+            font-family: 'Press Start 2P', monospace;
             padding: 10px 20px;
             font-size: 1.2em;
             background-color: rgba(255, 255, 255, 0.1);
@@ -47,11 +50,26 @@
         .buttons button:hover {
             background-color: rgba(255, 255, 255, 0.3);
         }
+        #click {
+            font-family: 'Press Start 2P', monospace;
+            padding: 15px 30px;
+            font-size: 1.5em;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+        }
+        #click:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
     </style>
 </head>
 <body>
+    <button id="click">Click</button> <!-- Click button to start -->
     <div id="text-box"></div>
-    <div class="buttons" style="display: none;">
+    <div class="buttons">
         <button id="yes">Yes</button>
         <button id="no">No</button>
     </div>
@@ -73,20 +91,42 @@
         const buttons = document.querySelector('.buttons');
         const yesButton = document.getElementById('yes');
         const noButton = document.getElementById('no');
+        const clickButton = document.getElementById('click');
 
         let index = 0;
+
+        // Initialize Audio Context
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSansSound() {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.type = 'square'; // Undertale character sound style
+            oscillator.frequency.value = Math.random() * 60 + 70; // Lower pitch: 75Hz–125Hz
+            gainNode.gain.value = 0.1; // Volume adjustment
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            oscillator.start();
+            setTimeout(() => {
+                oscillator.stop();
+            }, 50); // Short beep duration
+        }
 
         function typeMessage(message, callback) {
             let i = 0;
             textBox.textContent = '';
             const typingInterval = setInterval(() => {
                 textBox.textContent += message[i];
+                playSansSound(); // Play sound for each character
                 i++;
                 if (i >= message.length) {
                     clearInterval(typingInterval);
-                    setTimeout(callback, 2000); // Wait 2 seconds before next message
+                    setTimeout(callback, 2000); // Wait before the next message
                 }
-            }, 50); // Adjust typing speed (50ms per character)
+            }, 50); // Typing speed
         }
 
         function displayMessages() {
@@ -96,23 +136,28 @@
                     displayMessages();
                 });
             } else {
-                // Show the buttons after all messages are displayed
-                buttons.style.display = 'flex';
+                buttons.style.display = 'flex'; // Show buttons after all messages
             }
         }
 
         function handleYes() {
-            window.location.href = 'sing.html'; // Redirect to index.html when "Yes" is clicked
+            window.location.href = 'sing.html'; // Redirect to sing.html
         }
 
         function handleNo() {
-            window.location.href = 'why.html'; // Redirect to "why.html" when "No" is clicked
+            window.location.href = 'why.html'; // Redirect to why.html
         }
 
+        // Button event listeners
         yesButton.addEventListener('click', handleYes);
         noButton.addEventListener('click', handleNo);
 
-        displayMessages();
+        // Click button logic
+        clickButton.addEventListener('click', () => {
+            clickButton.style.display = 'none'; // Hide the click button
+            textBox.style.display = 'block'; // Show the text box
+            displayMessages(); // Start the typing effect
+        });
     </script>
 </body>
 </html>
