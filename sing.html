@@ -92,10 +92,10 @@
         .rotated-line {
             position: absolute; /* Keep it absolute to position over other elements */
             top: 50%; /* Set it relative to the height of its container */
-            left: 13%; /* Center it horizontally */
+            left: 12%; /* Center it horizontally */
             transform: translate(-50%, -50%) rotate(90deg); /* Center it with translate, and rotate */
-            width: 408px; /* Set width of the rotated line */
-            height: 46px; /* Set height of the rotated line */
+            width: 410px; /* Set width of the rotated line */
+            height: 52px; /* Set height of the rotated line */
             z-index: 8;
         }
         .ruler {
@@ -154,13 +154,14 @@
         }
     </style>
 </head>
+    
 <body>
     <img src="disco.gif" alt="Disco GIF" class="disco-gif">
     <img src="lights.gif" alt="Lights GIF" class="lights-gif">
     <img src="discoball.gif" alt="Discoball GIF" class="discoball-gif">
     <div class="main">
-        <img src="sing.gif" alt="Sing animation" class="sing-gif">
-        <img src="band.gif" alt="Band animation" class="band-gif">
+        <!-- <img src="sing.gif" alt="Sing animation" class="sing-gif"> -->
+        <!-- <img src="band.gif" alt="Band animation" class="band-gif"> -->
     </div>
     <!-- <img src="ruler.gif" alt="Top ruler" class="gifT">
     <img src="ruler.gif" alt="Bottom ruler" class="gifB"> -->
@@ -189,6 +190,10 @@
             "C4": 50, "D4": 100, "E4": 150, "F4": 200, "G4": 250,
             "A4": 300, "Bb4": 350, "C5": 400
         };
+
+        noteSlider.addEventListener('input', () => {
+            console.log(`Slider Value: ${noteSlider.value}`);
+        });
 
         const songNotes = [
             { note: "C4", text: "ha", duration: 1 },
@@ -258,7 +263,7 @@
 }
 
         function checkAlignment(note, noteData) {
-            const sliderValue = parseInt(noteSlider.value);
+            const sliderValue = parseInt(noteSlider.value) + 30;
             const invertedSliderValue = noteSlider.max - sliderValue + parseInt(noteSlider.min);
             const noteYPos = parseInt(note.dataset.yPos);
 
@@ -283,6 +288,7 @@
         }
 
         document.getElementById('start').addEventListener('click', function(){
+            // new Audio('hb.mp3').play();
             startSong();
             this.disabled = true;
             this.style.cursor = 'not-allowed';
