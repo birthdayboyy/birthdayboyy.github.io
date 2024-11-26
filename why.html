@@ -15,12 +15,13 @@
             background-image: url('cry.gif'); /* Cry gif centered */
             background-position: center; /* Center the cry.gif */
             background-repeat: no-repeat; /* Don't repeat the cry.gif */
-            background-size: 80%; /* Ensure the cry.gif stays contained */
+            background-size: 100%; /* Initial size of the cry.gif */
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative; /* Position relative to place text over it */
+            transition: background-size 108s linear; /* Apply transition on background-size */
         }
 
         #drip-gif {
@@ -29,6 +30,7 @@
             left: 50%;
             transform: translateX(-50%);
             width: 100%;
+            height: 20%;
         }
 
         #text-overlay {
@@ -40,16 +42,50 @@
             font-size: 2em;
             font-family: 'Press Start 2P', monospace; /* Apply the typewriter font */
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Adds shadow for better visibility */
+            cursor: pointer; /* Make the text look clickable */
+            transition: opacity 0.3s ease; /* Smooth fade-out effect */
+        }
+
+        #text-overlay:hover {
+            text-shadow: 3px 3px 6px rgba(255, 255, 0, 0.8); /* Highlight effect */
+        }
+
+        /* Class to trigger the shrinking animation */
+        .shrink-background {
+            background-size: 0%; /* Start shrinking the background */
         }
     </style>
 </head>
 <body>
     <img id="drip-gif" src="drip.gif" alt="Drip Gif">
-
     <div id="text-overlay">okay...</div> <!-- Text overlay on top of the cry.gif -->
-
+    <audio id="audio" loop>
+        <source src="farewell.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
     <script>
-        // No specific JavaScript needed for this layout
+        const audio = document.getElementById('audio');
+        const textOverlay = document.getElementById('text-overlay');
+        const body = document.body;
+
+        // Play the audio, hide the text, and start the background shrinking when clicked
+        textOverlay.addEventListener('click', () => {
+            audio.volume = 0.5; // Adjust volume (0.0 to 1.0)
+            audio.play();
+            textOverlay.style.opacity = 0; // Smoothly fade out the text
+            setTimeout(() => {
+                textOverlay.style.display = 'none'; // Completely remove text after fading
+            }, 300); // Match with the CSS transition duration
+            
+            // Trigger background shrinking after click
+            body.classList.add('shrink-background');
+        });
+
+        // Stop the audio after it finishes (when 1min48s is reached)
+        audio.addEventListener('ended', () => {
+            audio.pause(); // Pause the audio
+            audio.currentTime = 0; // Reset to the beginning of the audio
+        });
     </script>
 </body>
 </html>
