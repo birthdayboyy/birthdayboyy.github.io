@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>psst...</title>
+    <style>
+        /* Include Google Font for typewriter effect */
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Press Start 2P', monospace; /* Apply the typewriter font */
+            background-color: #000;
+            color: #fff;
+            flex-direction: column;
+        }
+        #text-box {
+            width: 80%;
+            max-width: 600px;
+            padding: 20px;
+            border: 2px solid #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.5em;
+            display: none; /* Hidden initially */
+        }
+        .buttons {
+            font-family: 'Press Start 2P', monospace;
+            margin-top: 20px;
+            display: none; /* Initially hidden */
+            justify-content: center;
+            gap: 20px;
+        }
+        .buttons button {
+            font-family: 'Press Start 2P', monospace;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 2px solid #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .buttons button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        #start {
+            font-family: 'Press Start 2P', monospace;
+            padding: 15px 30px;
+            font-size: 1.5em;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+        }
+        #start:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <button id="start">Start</button> <!-- Start button initially visible -->
+    <div id="text-box"></div>
+    <div class="buttons">
+        <button id="yes">Yes</button>
+        <button id="no">No</button>
+    </div>
+
+    <script>
+        const messages = [
+            "Hey",
+            "…",
+            "I’m sorry to bother you",
+            "But",
+            "…",
+            "Today is my birthday you know",
+            "…",
+            "I know you’re busy, you look like you’re searching something",
+            "But I can help you if you want!",
+            "…",
+            "But",
+            "…",
+            "Do you mind singing me happy birthday?..",
+            "Not many people know it's my birthday today",
+            "So I would really appreciate it :)"
+        ];
+
+        const textBox = document.getElementById('text-box');
+        const buttons = document.querySelector('.buttons');
+        const yesButton = document.getElementById('yes');
+        const noButton = document.getElementById('no');
+        const startButton = document.getElementById('start');
+
+        let index = 0;
+
+        // Initialize Audio Context
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSansSound() {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.type = 'square'; // Undertale character sound style
+            oscillator.frequency.value = Math.random() * 60 + 70; // Lower pitch: 75Hz–125Hz
+            gainNode.gain.value = 0.1; // Volume adjustment
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            oscillator.start();
+            setTimeout(() => {
+                oscillator.stop();
+            }, 50); // Short beep duration
+        }
+
+        function typeMessage(message, callback) {
+            let i = 0;
+            textBox.textContent = '';
+            const typingInterval = setInterval(() => {
+                textBox.textContent += message[i];
+                playSansSound(); // Play sound for each character
+                i++;
+                if (i >= message.length) {
+                    clearInterval(typingInterval);
+                    setTimeout(callback, 2000); // Wait before the next message
+                }
+            }, 50); // Typing speed
+        }
+
+        function displayMessages() {
+            if (index < messages.length) {
+                typeMessage(messages[index], () => {
+                    index++;
+                    displayMessages();
+                });
+            } else {
+                buttons.style.display = 'flex'; // Show buttons after all messages
+            }
+        }
+
+        function handleYes() {
+            window.location.href = 'sing.html'; // Redirect to sing.html
+        }
+
+        function handleNo() {
+            window.location.href = 'why.html'; // Redirect to why.html
+        }
+
+        // Button event listeners
+        yesButton.addEventListener('click', handleYes);
+        noButton.addEventListener('click', handleNo);
+
+        // Start button logic
+        startButton.addEventListener('click', () => {
+            startButton.style.display = 'none'; // Hide start button
+            textBox.style.display = 'block'; // Show the text box
+            displayMessages(); // Start the typing effect
+        });
+    </script>
+</body>
+</html>
