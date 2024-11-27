@@ -17,12 +17,14 @@
             background-image: url('bg.gif'), url('yay.gif');
             background-repeat: repeat, repeat;
             margin: 0;
+            overflow: hidden;
         }
         img {
             margin-top: 20px;
             max-width: 100%;
             height: auto;
         }
+
         #globe {
             position: absolute;
             left: 20%; /* You can change these values */
@@ -34,14 +36,18 @@
             color: white; /* Text color set to white */
             font-size: 1.5em; /* Smaller text size */
             text-align: center; /* Center text horizontally */
-            margin: 0; /* Remove default margins */
+            margin: 90%; /* Remove default margins */
+            margin-bottom: 0;
+            margin-top: 0;
             padding: 0 20px; /* Optional: padding to ensure text doesn't touch the edges */
+            /* width: 100px; */
+
         }
     </style>
 </head>
 <body>
     <div>you sing beautifully, this is the best birthday! :D</div>
-    <img src="nextmap.gif" alt="Next Map Animation">
+    <img id="map" src="nextmap.gif" alt="Next Map Animation">
     <img id="globe" src="globe.gif" alt="Globe Animation">
     <img id="foot" src="run.gif" alt="Run Animation">
 </body>
